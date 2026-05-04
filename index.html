@@ -30,11 +30,11 @@
             <header class="fade-in-up">
                 <div class="profile-container">
                     <div class="profile-frame" onmouseenter="playHover()">
-                        <!-- نظام التحميل الذكي للصورة -->
+                        <!-- تم وضع اللينك المباشر الذي أكدت أنه يعمل -->
                         <img id="myPhoto" src="20250804_183140.jpg" 
                              alt="Nour Amr" 
                              class="profile-img" 
-                             onerror="tryNextExtension(this)">
+                             onerror="tryBackups(this)">
                         
                         <!-- أيقونة بديلة تظهر في حالة الفشل التام -->
                         <div id="alt-icon" style="display:none; font-size: 5rem; color: #FFD700; margin-top: 40px;">
@@ -122,13 +122,16 @@
         const introScreen = document.getElementById('intro-screen');
         const mainContent = document.getElementById('main-site-content');
         
-        // نظام محاولات تحميل الصورة بامتدادات مختلفة
-        let attempts = 0;
-        function tryNextExtension(img) {
-            const extensions = ['png', 'jpeg', 'JPG', 'PNG', 'webp'];
-            if (attempts < extensions.length) {
-                img.src = "20250804_183140." + extensions[attempts];
-                attempts++;
+        // سكريبت احتياطي لو السيرفر هنج أو حصلت مشكلة في المسار
+        function tryBackups(img) {
+            const backups = [
+                '20250804_183140.jpg',
+                'profile.jpg',
+                'Profile.jpg'
+            ];
+            let current = backups.indexOf(img.src.split('/').pop());
+            if (current < backups.length - 1) {
+                img.src = backups[current + 1];
             } else {
                 img.style.display = 'none';
                 document.getElementById('alt-icon').style.display = 'block';
