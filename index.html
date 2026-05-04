@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="main-html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ÑØÛR | Portfolio v4.5</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+</head>
+<body oncontextmenu="return false;">
+
+    <!-- شاشة الإنترو -->
+    <div id="intro-screen">
+        <video id="intro-video" autoplay muted playsinline preload="auto">
+            <source src="intro.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- محتوى الموقع الرئيسي -->
+    <div id="main-site-content" style="display: none; opacity: 0;">
+        <button class="lang-toggle" onclick="playClick(); toggleLanguage()">
+            <i class="fas fa-globe"></i> <span id="lang-text">English</span>
+        </button>
+
+        <div class="bg-gradient"></div>
+
+        <div class="container" id="page-content">
+            <header class="fade-in-up">
+                <div class="profile-container">
+                    <div class="profile-frame" onmouseenter="playHover()">
+                        <!-- نظام التحميل الذكي للصورة -->
+                        <img id="myPhoto" src="20250804_183140.jpg" 
+                             alt="Nour Amr" 
+                             class="profile-img" 
+                             onerror="tryNextExtension(this)">
+                        
+                        <!-- أيقونة بديلة تظهر في حالة الفشل التام -->
+                        <div id="alt-icon" style="display:none; font-size: 5rem; color: #FFD700; margin-top: 40px;">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    </div>
+                    <div class="online-status"></div>
+                </div>
+                <h1 id="user-name" class="glitch-effect">Nour Amr</h1>
+                <p class="tagline" id="tagline">Web Developer | Video Editor | Graphic Designer</p>
+            </header>
+
+            <div class="info-grid">
+                <div class="card premium-card" onmouseenter="playHover()">
+                    <div class="card-glow"></div>
+                    <div class="card-icon"><i class="fas fa-code"></i></div>
+                    <h3 id="txt-web-title">تطوير الويب</h3>
+                    <p id="txt-web-desc">مواقع ذكية بتجربة مستخدم عالمية وحماية ÑØÛR المتقدمة.</p>
+                </div>
+                <div class="card premium-card" onmouseenter="playHover()">
+                    <div class="card-glow"></div>
+                    <div class="card-icon"><i class="fas fa-video"></i></div>
+                    <h3 id="txt-video-title">تحرير الفيديو</h3>
+                    <p id="txt-video-desc">صناعة محتوى بصري يخطف الأنظار بمونتاج احترافي.</p>
+                </div>
+                <div class="card premium-card" onmouseenter="playHover()">
+                    <div class="card-glow"></div>
+                    <div class="card-icon"><i class="fas fa-pen-nib"></i></div>
+                    <h3 id="txt-design-title">فوتوشوب</h3>
+                    <p id="txt-design-desc">هويات بصرية وتصاميم سوشيال ميديا بلمسة فنية إبداعية.</p>
+                </div>
+            </div>
+
+            <div class="glass-section contact-box-premium">
+                <div class="contact-header">
+                    <i class="fas fa-paper-plane fly-icon"></i>
+                    <h2 id="txt-contact-title">ارسل فكرتك</h2>
+                </div>
+                <form action="https://formspree.io/f/your-id-here" method="POST" class="contact-form">
+                    <div class="input-group">
+                        <div class="field-wrapper">
+                            <input type="text" id="input-name" name="name" placeholder="اسمك الكريم" required>
+                            <span class="line"></span>
+                        </div>
+                        <div class="field-wrapper">
+                            <input type="email" id="input-email" name="email" placeholder="بريدك الإلكتروني" required>
+                            <span class="line"></span>
+                        </div>
+                    </div>
+                    <div class="field-wrapper">
+                        <textarea name="message" id="input-msg" rows="4" placeholder="اكتب تفاصيل مشروعك هنا..." required></textarea>
+                        <span class="line"></span>
+                    </div>
+                    <button type="submit" id="txt-send-btn" class="glow-btn-ultimate" onclick="playClick()">
+                        <span id="btn-text">إرسال الرسالة</span>
+                        <i class="fas fa-rocket"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="developer-tag">Developed by <span>ÑØÛR</span></div>
+        </div>
+
+        <div class="social-dock">
+            <a href="https://wa.me/201551447487" class="social-btn whatsapp" target="_blank" onclick="playClick()">
+                <i class="fab fa-whatsapp"></i>
+                <span class="tooltip">WhatsApp</span>
+            </a>
+            <a href="https://www.facebook.com/nour.amr1356" class="social-btn facebook" target="_blank" onclick="playClick()">
+                <i class="fab fa-facebook-f"></i>
+                <span class="tooltip">Facebook</span>
+            </a>
+            <a href="https://www.instagram.com/nour_amr1356/" class="social-btn instagram" target="_blank" onclick="playClick()">
+                <i class="fab fa-instagram"></i>
+                <span class="tooltip">Instagram</span>
+            </a>
+        </div>
+    </div>
+
+    <audio id="hoverSound"><source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg"></audio>
+    <audio id="clickSound"><source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        const video = document.getElementById('intro-video');
+        const introScreen = document.getElementById('intro-screen');
+        const mainContent = document.getElementById('main-site-content');
+        
+        // نظام محاولات تحميل الصورة بامتدادات مختلفة
+        let attempts = 0;
+        function tryNextExtension(img) {
+            const extensions = ['png', 'jpeg', 'JPG', 'PNG', 'webp'];
+            if (attempts < extensions.length) {
+                img.src = "20250804_183140." + extensions[attempts];
+                attempts++;
+            } else {
+                img.style.display = 'none';
+                document.getElementById('alt-icon').style.display = 'block';
+            }
+        }
+
+        function transitionToSite() {
+            if (introScreen.style.display !== 'none') {
+                introScreen.style.opacity = '0';
+                setTimeout(() => {
+                    introScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    setTimeout(() => { mainContent.style.opacity = '1'; }, 50);
+                }, 1000);
+            }
+        }
+
+        video.onended = transitionToSite;
+        video.onerror = transitionToSite;
+        setTimeout(transitionToSite, 5000); 
+
+        // حماية ÑØÛR
+        document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
+
+        const translations = {
+            en: {
+                langBtn: "عربي", tagline: "Web Developer | Video Editor | Graphic Designer",
+                webTitle: "Web Development", webDesc: "Smart websites with global UX and advanced ÑØÛR protection.",
+                videoTitle: "Video Editing", videoDesc: "Cinematic content that catches the eye.",
+                designTitle: "Photoshop", designDesc: "Creative visual identities and designs.",
+                contactTitle: "Get In Touch", namePh: "Your Name", emailPh: "Your Email",
+                msgPh: "Project details...", sendBtn: "Send Now"
+            },
+            ar: {
+                langBtn: "English", tagline: "Web Developer | Video Editor | Graphic Designer",
+                webTitle: "تطوير الويب", webDesc: "مواقع ذكية بتجربة مستخدم عالمية وحماية ÑØÛR المتقدمة.",
+                videoTitle: "تحرير الفيديو", videoDesc: "صناعة محتوى بصري يخطف الأنظار بمونتاج احترافي.",
+                designTitle: "فوتوشوب", designDesc: "هويات بصرية وتصاميم سوشيال ميديا بلمسة فنية إبداعية.",
+                contactTitle: "ارسل فكرتك", namePh: "اسمك الكريم", emailPh: "بريدك الإلكتروني",
+                msgPh: "اكتب تفاصيل مشروعك هنا...", sendBtn: "إرسال الرسالة"
+            }
+        };
+
+        function toggleLanguage() {
+            const container = document.getElementById('page-content');
+            container.classList.add('fade-out');
+            setTimeout(() => {
+                const h = document.getElementById('main-html');
+                const isAr = h.getAttribute('lang') === 'ar';
+                const nextLang = isAr ? 'en' : 'ar';
+                h.setAttribute('lang', nextLang);
+                h.setAttribute('dir', nextLang === 'ar' ? 'rtl' : 'ltr');
+                document.getElementById('lang-text').innerText = translations[nextLang].langBtn;
+                document.getElementById('tagline').innerText = translations[nextLang].tagline;
+                document.getElementById('txt-web-title').innerText = translations[nextLang].webTitle;
+                document.getElementById('txt-web-desc').innerText = translations[nextLang].webDesc;
+                document.getElementById('txt-video-title').innerText = translations[nextLang].videoTitle;
+                document.getElementById('txt-video-desc').innerText = translations[nextLang].videoDesc;
+                document.getElementById('txt-design-title').innerText = translations[nextLang].designTitle;
+                document.getElementById('txt-design-desc').innerText = translations[nextLang].designDesc;
+                document.getElementById('txt-contact-title').innerText = translations[nextLang].contactTitle;
+                document.getElementById('btn-text').innerText = translations[nextLang].sendBtn;
+                document.getElementById('input-name').placeholder = translations[nextLang].namePh;
+                document.getElementById('input-email').placeholder = translations[nextLang].emailPh;
+                document.getElementById('input-msg').placeholder = translations[nextLang].msgPh;
+                container.classList.remove('fade-out');
+            }, 400);
+        }
+
+        function playHover() { document.getElementById('hoverSound').play().catch(e=>{}); }
+        function playClick() { document.getElementById('clickSound').play().catch(e=>{}); }
+    </script>
+</body>
+</html>
