@@ -3,206 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ÑØÛR | Portfolio v4.5</title>
+    <title>ÑØÛR | THE ULTIMATE EXPERIENCE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --primary: #ff0000; 
+            --accent: #ff4d4d;
+            --bg: #050505; 
+            --text: #ffffff; 
+            --glow: 0 0 20px rgba(255, 0, 0, 0.8);
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; user-select: none !important; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; overflow-x: hidden; }
+
+        /* Matrix Background */
+        #canvas { position: fixed; inset: 0; z-index: -1; opacity: 0.2; filter: blur(1px); }
+
+        /* Custom Cursor - High Precision */
+        #cursor { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; pointer-events: none; z-index: 999999; box-shadow: var(--glow); mix-blend-mode: difference; }
+        #cursor-follower { position: fixed; width: 35px; height: 35px; border: 1px solid var(--primary); border-radius: 50%; pointer-events: none; z-index: 999998; transition: 0.15s ease-out; background: rgba(255,0,0,0.05); backdrop-filter: blur(2px); }
+
+        /* Preloader System */
+        #preloader { position: fixed; inset: 0; background: radial-gradient(circle at center, #111 0%, #000 100%); z-index: 100000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .engrave-svg { width: 85%; max-width: 600px; filter: drop-shadow(0 0 30px var(--primary)); }
+        .engrave-text { font-family: 'Orbitron', sans-serif; font-size: 90px; font-weight: 900; fill: none; stroke: var(--primary); stroke-width: 1.5; stroke-dasharray: 1000; stroke-dashoffset: 1000; text-shadow: var(--glow); }
+        @keyframes draw { to { stroke-dashoffset: 0; } }
+        .start-btn { margin-top: 40px; padding: 18px 50px; background: none; border: 1px solid var(--primary); color: #fff; font-family: 'Orbitron'; letter-spacing: 8px; opacity: 0; transform: translateY(30px); transition: 0.8s ease; font-weight: 900; box-shadow: inset 0 0 0 rgba(255,0,0,0); }
+        .start-btn.show { opacity: 1; transform: translateY(0); }
+        .start-btn:hover { background: var(--primary); box-shadow: var(--glow), inset 0 0 20px rgba(0,0,0,0.5); letter-spacing: 12px; }
+
+        /* Language Toggle - Glass style */
+        .lang-btn { position: fixed; top: 30px; left: 30px; z-index: 1000; padding: 12px 25px; border: 1px solid rgba(255,0,0,0.3); background: var(--glass); color: #fff; font-weight: 900; backdrop-filter: blur(10px); transition: 0.4s; letter-spacing: 2px; }
+        .lang-btn:hover { background: var(--primary); box-shadow: var(--glow); transform: scale(1.05); border-color: #fff; }
+
+        /* Content Wrapper */
+        #main-wrapper { display: none; opacity: 0; transition: 2.5s; text-align: center; }
+        
+        .profile-container { position: relative; width: 250px; height: 250px; margin: 120px auto 40px; }
+        .profile-container::before { content: ''; position: absolute; inset: -15px; border: 2px solid var(--primary); border-radius: 50%; border-right-color: transparent; border-bottom-color: transparent; animation: spin 4s linear infinite; }
+        .profile-container::after { content: ''; position: absolute; inset: -25px; border: 1px dashed var(--accent); border-radius: 50%; opacity: 0.3; animation: spin 10s linear reverse infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .profile-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid #fff; position: relative; z-index: 2; box-shadow: 0 0 40px rgba(255,0,0,0.3); }
+
+        .main-title { font-family: 'Orbitron'; font-size: 5.5rem; letter-spacing: 15px; margin-bottom: 10px; color: #fff; text-shadow: 0 0 30px var(--primary); text-transform: uppercase; }
+        
+        /* Services Grid - Deluxe Glass */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; padding: 60px; max-width: 1300px; margin: 0 auto; }
+        .service-card { background: var(--glass); padding: 50px 30px; border: 1px solid rgba(255,255,255,0.05); backdrop-filter: blur(15px); transition: 0.6s cubic-bezier(0.2, 1, 0.3, 1); position: relative; border-radius: 5px; }
+        .service-card:hover { background: rgba(255,0,0,0.08); border-color: var(--primary); transform: translateY(-20px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,0,0,0.2); }
+        .service-card i { font-size: 3.5rem; color: var(--primary); margin-bottom: 25px; filter: drop-shadow(0 0 10px var(--primary)); }
+        .service-card h3 { font-family: 'Orbitron'; letter-spacing: 3px; margin-bottom: 15px; }
+
+        /* Contact Box - Cyber Style */
+        .contact-box { max-width: 700px; margin: 100px auto; padding: 60px; background: var(--glass); border: 1px solid rgba(255,0,0,0.2); backdrop-filter: blur(20px); position: relative; box-shadow: 0 0 50px rgba(0,0,0,0.8); }
+        .contact-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); }
+        .contact-box h2 { color: var(--primary); margin-bottom: 40px; letter-spacing: 5px; font-family: 'Orbitron'; font-weight: 900; }
+        input, textarea { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 18px; margin-bottom: 25px; outline: none; transition: 0.4s; font-family: 'Cairo'; border-radius: 3px; }
+        input:focus, textarea:focus { border-color: var(--primary); background: rgba(255,0,0,0.05); box-shadow: inset 0 0 10px rgba(255,0,0,0.1); }
+        .send-btn { width: 100%; padding: 20px; background: var(--primary); color: #fff; border: none; font-weight: 900; letter-spacing: 5px; font-family: 'Orbitron'; transition: 0.5s; cursor: pointer !important; }
+        .send-btn:hover { letter-spacing: 15px; box-shadow: var(--glow); background: #ff3333; }
+
+        /* Side Socials - Glowing */
+        .social-bar { position: fixed; right: 30px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 20px; }
+        .social-bar a { width: 55px; height: 55px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff; text-decoration: none; transition: 0.4s; background: var(--glass); backdrop-filter: blur(5px); font-size: 1.4rem; }
+        .social-bar a:hover { background: var(--primary); transform: translateX(-12px) rotate(360deg); box-shadow: var(--glow); border-color: #fff; }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: 1.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* 🔥 DEVELOPED BY ÑØÛR FOOTER */
+        .final-footer { 
+            padding: 80px 20px; 
+            text-align: center; 
+            background: linear-gradient(to top, rgba(255,0,0,0.05), transparent); 
+        }
+        .dev-tag { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 1.2rem; 
+            letter-spacing: 10px; 
+            color: rgba(255,255,255,0.3); 
+            text-transform: uppercase;
+        }
+        .dev-tag span { 
+            color: var(--primary); 
+            font-weight: 900; 
+            text-shadow: 0 0 15px var(--primary); 
+            animation: neon-pulse 2s infinite alternate;
+        }
+        @keyframes neon-pulse {
+            from { opacity: 0.6; text-shadow: 0 0 5px var(--primary); }
+            to { opacity: 1; text-shadow: 0 0 20px var(--primary), 0 0 30px var(--primary); }
+        }
+        .copyright {
+            margin-top: 15px;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.1);
+            letter-spacing: 3px;
+        }
+    </style>
 </head>
 <body oncontextmenu="return false;">
 
-    <!-- شاشة الإنترو -->
-    <div id="intro-screen">
-        <video id="intro-video" autoplay muted playsinline preload="auto">
-            <source src="intro.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+    <canvas id="canvas"></canvas>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <div id="preloader">
+        <svg class="engrave-svg" viewBox="0 0 600 120">
+            <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" class="engrave-text" id="eng-txt">ÑØÛR</text>
+        </svg>
+        <button class="start-btn" id="start-btn" onclick="startSystem()">ACCESS GRANTED</button>
     </div>
 
-    <!-- محتوى الموقع الرئيسي -->
-    <div id="main-site-content" style="display: none; opacity: 0;">
-        <button class="lang-toggle" onclick="playClick(); toggleLanguage()">
-            <i class="fas fa-globe"></i> <span id="lang-text">English</span>
-        </button>
+    <audio id="sfx-laser" src="https://assets.mixkit.co/active_storage/sfx/2555/2555-preview.mp3" loop></audio>
+    <audio id="sfx-power" src="https://assets.mixkit.co/active_storage/sfx/2556/2556-preview.mp3"></audio>
 
-        <div class="bg-gradient"></div>
-
-        <div class="container" id="page-content">
-            <header class="fade-in-up">
-                <div class="profile-container">
-                    <div class="profile-frame" onmouseenter="playHover()">
-                        <!-- تم وضع اللينك المباشر الذي أكدت أنه يعمل -->
-                        <img id="myPhoto" src="20250804_183140.jpg" 
-                             alt="Nour Amr" 
-                             class="profile-img" 
-                             onerror="tryBackups(this)">
-                        
-                        <!-- أيقونة بديلة تظهر في حالة الفشل التام -->
-                        <div id="alt-icon" style="display:none; font-size: 5rem; color: #FFD700; margin-top: 40px;">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                    </div>
-                    <div class="online-status"></div>
-                </div>
-                <h1 id="user-name" class="glitch-effect">Nour Amr</h1>
-                <p class="tagline" id="tagline">Web Developer | Video Editor | Graphic Designer</p>
-            </header>
-
-            <div class="info-grid">
-                <div class="card premium-card" onmouseenter="playHover()">
-                    <div class="card-glow"></div>
-                    <div class="card-icon"><i class="fas fa-code"></i></div>
-                    <h3 id="txt-web-title">تطوير الويب</h3>
-                    <p id="txt-web-desc">مواقع ذكية بتجربة مستخدم عالمية وحماية ÑØÛR المتقدمة.</p>
-                </div>
-                <div class="card premium-card" onmouseenter="playHover()">
-                    <div class="card-glow"></div>
-                    <div class="card-icon"><i class="fas fa-video"></i></div>
-                    <h3 id="txt-video-title">تحرير الفيديو</h3>
-                    <p id="txt-video-desc">صناعة محتوى بصري يخطف الأنظار بمونتاج احترافي.</p>
-                </div>
-                <div class="card premium-card" onmouseenter="playHover()">
-                    <div class="card-glow"></div>
-                    <div class="card-icon"><i class="fas fa-pen-nib"></i></div>
-                    <h3 id="txt-design-title">فوتوشوب</h3>
-                    <p id="txt-design-desc">هويات بصرية وتصاميم سوشيال ميديا بلمسة فنية إبداعية.</p>
-                </div>
+    <div id="main-wrapper">
+        <button class="lang-btn" onclick="toggleLang()"><span id="lang-label">ENGLISH</span></button>
+        
+        <header class="reveal">
+            <div class="profile-container">
+                <img src="20250804_183140.jpg" alt="Nour" class="profile-img">
             </div>
+            <h1 class="main-title">ÑØÛR AMR</h1>
+            <p id="sub-title" style="letter-spacing: 8px; color: var(--primary); font-weight: 900; text-transform: uppercase;">مبرمج | محرر فيديو | مصمم جرافيك</p>
+        </header>
 
-            <div class="glass-section contact-box-premium">
-                <div class="contact-header">
-                    <i class="fas fa-paper-plane fly-icon"></i>
-                    <h2 id="txt-contact-title">ارسل فكرتك</h2>
-                </div>
-                <form action="https://formspree.io/f/your-id-here" method="POST" class="contact-form">
-                    <div class="input-group">
-                        <div class="field-wrapper">
-                            <input type="text" id="input-name" name="name" placeholder="اسمك الكريم" required>
-                            <span class="line"></span>
-                        </div>
-                        <div class="field-wrapper">
-                            <input type="email" id="input-email" name="email" placeholder="بريدك الإلكتروني" required>
-                            <span class="line"></span>
-                        </div>
-                    </div>
-                    <div class="field-wrapper">
-                        <textarea name="message" id="input-msg" rows="4" placeholder="اكتب تفاصيل مشروعك هنا..." required></textarea>
-                        <span class="line"></span>
-                    </div>
-                    <button type="submit" id="txt-send-btn" class="glow-btn-ultimate" onclick="playClick()">
-                        <span id="btn-text">إرسال الرسالة</span>
-                        <i class="fas fa-rocket"></i>
-                    </button>
-                </form>
+        <section class="services-grid reveal">
+            <div class="service-card">
+                <i class="fas fa-terminal"></i>
+                <h3 id="s1-t">البرمجيات</h3>
+                <p id="s1-d">هندسة وتطوير واجهات برمجية ذكية وأنظمة ويب متقدمة.</p>
             </div>
+            <div class="service-card">
+                <i class="fas fa-film"></i>
+                <h3 id="s2-t">المونتاج</h3>
+                <p id="s2-d">تعديل وصناعة محتوى بصري سينمائي بتقنيات الموشن جرافيك.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-pen-nib"></i>
+                <h3 id="s3-t">التصميم</h3>
+                <p id="s3-d">بناء الهويات البصرية والشعارات بلمسة فنية عصرية.</p>
+            </div>
+        </section>
 
-            <div class="developer-tag">Developed by <span>ÑØÛR</span></div>
+        <div class="contact-box reveal">
+            <h2 id="msg-title">إرسال بيانات المهمة</h2>
+            <input type="text" id="f-name" placeholder="الاسم الكامل">
+            <input type="email" id="f-email" placeholder="بريد التواصل">
+            <textarea id="f-msg" rows="5" placeholder="اكتب تفاصيل مشروعك هنا..."></textarea>
+            <button class="send-btn" id="f-btn">إرسال المشفر</button>
         </div>
 
-        <div class="social-dock">
-            <a href="https://wa.me/201551447487" class="social-btn whatsapp" target="_blank" onclick="playClick()">
-                <i class="fab fa-whatsapp"></i>
-                <span class="tooltip">WhatsApp</span>
-            </a>
-            <a href="https://www.facebook.com/nour.amr1356" class="social-btn facebook" target="_blank" onclick="playClick()">
-                <i class="fab fa-facebook-f"></i>
-                <span class="tooltip">Facebook</span>
-            </a>
-            <a href="https://www.instagram.com/nour_amr1356/" class="social-btn instagram" target="_blank" onclick="playClick()">
-                <i class="fab fa-instagram"></i>
-                <span class="tooltip">Instagram</span>
-            </a>
+        <div class="social-bar">
+            <a href="https://wa.me/201551447487"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://www.facebook.com/nour.amr1356"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/nour_amr1356/"><i class="fab fa-instagram"></i></a>
         </div>
+
+        <footer class="final-footer reveal">
+            <p class="dev-tag">Developed by <span>ÑØÛR</span></p>
+            <p class="copyright">DESIGNED & ENCRYPTED BY ÑØÛR 😉</p>
+        </footer>
     </div>
-
-    <audio id="hoverSound"><source src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" type="audio/mpeg"></audio>
-    <audio id="clickSound"><source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"></audio>
 
     <script>
-        const video = document.getElementById('intro-video');
-        const introScreen = document.getElementById('intro-screen');
-        const mainContent = document.getElementById('main-site-content');
-        
-        // سكريبت احتياطي لو السيرفر هنج أو حصلت مشكلة في المسار
-        function tryBackups(img) {
-            const backups = [
-                '20250804_183140.jpg',
-                'profile.jpg',
-                'Profile.jpg'
-            ];
-            let current = backups.indexOf(img.src.split('/').pop());
-            if (current < backups.length - 1) {
-                img.src = backups[current + 1];
-            } else {
-                img.style.display = 'none';
-                document.getElementById('alt-icon').style.display = 'block';
-            }
+        // Enhanced Matrix Effect
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const chars = "ÑØÛR10@#$%&";
+        const drops = Array(Math.floor(canvas.width/18)).fill(1);
+        function drawM() {
+            ctx.fillStyle = "rgba(0,0,0,0.08)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+            ctx.fillStyle = "#ff0000"; ctx.font = "bold 16px Orbitron";
+            drops.forEach((y, i) => {
+                ctx.fillText(chars[Math.floor(Math.random()*chars.length)], i*18, y*18);
+                if(y*18 > canvas.height && Math.random() > 0.98) drops[i] = 0;
+                drops[i]++;
+            });
         }
+        setInterval(drawM, 40);
 
-        function transitionToSite() {
-            if (introScreen.style.display !== 'none') {
-                introScreen.style.opacity = '0';
-                setTimeout(() => {
-                    introScreen.style.display = 'none';
-                    mainContent.style.display = 'block';
-                    setTimeout(() => { mainContent.style.opacity = '1'; }, 50);
-                }, 1000);
-            }
-        }
+        // Deluxe Cursor Logic
+        const cur = document.getElementById('cursor');
+        const fol = document.getElementById('cursor-follower');
+        document.addEventListener('mousemove', (e) => {
+            cur.style.left = e.clientX + 'px'; cur.style.top = e.clientY + 'px';
+            fol.style.left = e.clientX - 17 + 'px'; fol.style.top = e.clientY - 17 + 'px';
+        });
 
-        video.onended = transitionToSite;
-        video.onerror = transitionToSite;
-        setTimeout(transitionToSite, 5000); 
-
-        // حماية ÑØÛR
-        document.onkeydown = e => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && e.keyCode == 73)) return false; };
-
-        const translations = {
-            en: {
-                langBtn: "عربي", tagline: "Web Developer | Video Editor | Graphic Designer",
-                webTitle: "Web Development", webDesc: "Smart websites with global UX and advanced ÑØÛR protection.",
-                videoTitle: "Video Editing", videoDesc: "Cinematic content that catches the eye.",
-                designTitle: "Photoshop", designDesc: "Creative visual identities and designs.",
-                contactTitle: "Get In Touch", namePh: "Your Name", emailPh: "Your Email",
-                msgPh: "Project details...", sendBtn: "Send Now"
-            },
-            ar: {
-                langBtn: "English", tagline: "Web Developer | Video Editor | Graphic Designer",
-                webTitle: "تطوير الويب", webDesc: "مواقع ذكية بتجربة مستخدم عالمية وحماية ÑØÛR المتقدمة.",
-                videoTitle: "تحرير الفيديو", videoDesc: "صناعة محتوى بصري يخطف الأنظار بمونتاج احترافي.",
-                designTitle: "فوتوشوب", designDesc: "هويات بصرية وتصاميم سوشيال ميديا بلمسة فنية إبداعية.",
-                contactTitle: "ارسل فكرتك", namePh: "اسمك الكريم", emailPh: "بريدك الإلكتروني",
-                msgPh: "اكتب تفاصيل مشروعك هنا...", sendBtn: "إرسال الرسالة"
-            }
+        // System Initialization
+        window.onload = () => {
+            const laser = document.getElementById('sfx-laser');
+            document.getElementById('eng-txt').style.animation = "draw 4s forwards cubic-bezier(0.4, 0, 0.2, 1)";
+            laser.play();
+            setTimeout(() => { 
+                laser.pause(); 
+                document.getElementById('start-btn').classList.add('show'); 
+            }, 4000);
         };
 
-        function toggleLanguage() {
-            const container = document.getElementById('page-content');
-            container.classList.add('fade-out');
+        function startSystem() {
+            document.getElementById('sfx-power').play();
+            document.getElementById('preloader').style.transform = "scale(1.5)";
+            document.getElementById('preloader').style.opacity = "0";
             setTimeout(() => {
-                const h = document.getElementById('main-html');
-                const isAr = h.getAttribute('lang') === 'ar';
-                const nextLang = isAr ? 'en' : 'ar';
-                h.setAttribute('lang', nextLang);
-                h.setAttribute('dir', nextLang === 'ar' ? 'rtl' : 'ltr');
-                document.getElementById('lang-text').innerText = translations[nextLang].langBtn;
-                document.getElementById('tagline').innerText = translations[nextLang].tagline;
-                document.getElementById('txt-web-title').innerText = translations[nextLang].webTitle;
-                document.getElementById('txt-web-desc').innerText = translations[nextLang].webDesc;
-                document.getElementById('txt-video-title').innerText = translations[nextLang].videoTitle;
-                document.getElementById('txt-video-desc').innerText = translations[nextLang].videoDesc;
-                document.getElementById('txt-design-title').innerText = translations[nextLang].designTitle;
-                document.getElementById('txt-design-desc').innerText = translations[nextLang].designDesc;
-                document.getElementById('txt-contact-title').innerText = translations[nextLang].contactTitle;
-                document.getElementById('btn-text').innerText = translations[nextLang].sendBtn;
-                document.getElementById('input-name').placeholder = translations[nextLang].namePh;
-                document.getElementById('input-email').placeholder = translations[nextLang].emailPh;
-                document.getElementById('input-msg').placeholder = translations[nextLang].msgPh;
-                container.classList.remove('fade-out');
-            }, 400);
+                document.getElementById('preloader').style.display = "none";
+                const m = document.getElementById('main-wrapper');
+                m.style.display = "block";
+                setTimeout(() => { 
+                    m.style.opacity = "1"; 
+                    document.querySelectorAll('.reveal').forEach(r => r.classList.add('active')); 
+                }, 100);
+            }, 1200);
         }
 
-        function playHover() { document.getElementById('hoverSound').play().catch(e=>{}); }
-        function playClick() { document.getElementById('clickSound').play().catch(e=>{}); }
+        // Translation Logic
+        const t = {
+            en: { label: "عربي", sub: "PROGRAMMER | VIDEO EDITOR | DESIGNER", msg: "SEND MISSION DATA", name: "Full Name", email: "Contact Email", info: "Project Details...", btn: "SEND ENCRYPTED", s1t: "SOFTWARE", s1d: "Engineering smart interfaces and advanced systems.", s2t: "EDITING", s2d: "Creating cinematic content with motion graphics.", s3t: "DESIGN", s3d: "Crafting premium identities with a modern touch." },
+            ar: { label: "ENGLISH", sub: "مبرمج | محرر فيديو | مصمم جرافيك", msg: "إرسال بيانات المهمة", name: "الاسم الكامل", email: "بريد التواصل", info: "اكتب تفاصيل مشروعك هنا...", btn: "إرسال المشفر", s1t: "البرمجيات", s1d: "هندسة وتطوير واجهات برمجية ذكية وأنظمة ويب.", s2t: "المونتاج", s2d: "تعديل وصناعة محتوى بصري سينمائي.", s3t: "التصميم", s3d: "بناء الهويات البصرية والشعارات بلمسة فنية." }
+        };
+        function toggleLang() {
+            const h = document.getElementById('main-html');
+            const l = h.getAttribute('lang') === 'ar' ? 'en' : 'ar';
+            h.setAttribute('lang', l); h.setAttribute('dir', l === 'ar' ? 'rtl' : 'ltr');
+            document.getElementById('lang-label').innerText = t[l].label;
+            document.getElementById('sub-title').innerText = t[l].sub;
+            document.getElementById('msg-title').innerText = t[l].msg;
+            document.getElementById('f-name').placeholder = t[l].name;
+            document.getElementById('f-email').placeholder = t[l].email;
+            document.getElementById('f-msg').placeholder = t[l].info;
+            document.getElementById('f-btn').innerText = t[l].btn;
+            document.getElementById('s1-t').innerText = t[l].s1t; document.getElementById('s1-d').innerText = t[l].s1d;
+            document.getElementById('s2-t').innerText = t[l].s2t; document.getElementById('s2-d').innerText = t[l].s2d;
+            document.getElementById('s3-t').innerText = t[l].s3t; document.getElementById('s3-d').innerText = t[l].s3d;
+        }
+
+        // Security Shield
+        document.onkeydown = (e) => { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && [73, 74, 67].includes(e.keyCode))) return false; };
     </script>
 </body>
 </html>
